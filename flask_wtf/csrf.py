@@ -293,7 +293,7 @@ class CSRFProtect(object):
         if isinstance(view, string_types):
             view_location = view
         else:
-            if isinstance(view, views.views.MethodViewType):
+            if isinstance(view, views.MethodViewType):
                 view_location = '.'.join((view.__module__, view.__name__.lower()))
             else:
                 view_location = '.'.join((view.__module__, view.__name__))
