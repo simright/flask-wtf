@@ -4,7 +4,7 @@ import os
 import warnings
 from functools import wraps
 
-from flask import Blueprint, current_app, g, request, session
+from flask import Blueprint, current_app, g, request, session, views
 from itsdangerous import BadData, SignatureExpired, URLSafeTimedSerializer
 from werkzeug.exceptions import BadRequest
 from werkzeug.security import safe_str_cmp
@@ -293,7 +293,10 @@ class CSRFProtect(object):
         if isinstance(view, string_types):
             view_location = view
         else:
-            view_location = '.'.join((view.__module__, view.__name__))
+            if isinstance(view, views.views.MethodViewType):
+                view_location = '.'.join((view.__module__, view.__name__.lower()))
+            else:
+                view_location = '.'.join((view.__module__, view.__name__))
 
         self._exempt_views.add(view_location)
         return view
